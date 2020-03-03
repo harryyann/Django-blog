@@ -1,5 +1,4 @@
 import logging
-
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404
@@ -27,19 +26,12 @@ class IndexView(ListView):
     page_kwarg = 'page'  # 前端约定好的页码的key
 
     def get_queryset(self):
-        # test_add.delay(5, 5)  # celery测试, 里面有睡了5秒, 但是异步体验不到, 看celery控制台的输出
-
         queryset = cache.get(self.cache_key)  # 查询缓存
         if not queryset:  # 缓存没命中会返回 None
             queryset = super().get_queryset()  # 调用父类的方法
             cache.set(self.cache_key, queryset)  # 设置缓存
         # qs会根据model里定义的 ordering排序
         return queryset
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()  # 调用父类的方法
-    #     # qs会根据model里定义的 ordering排序
-    #     return queryset
 
     @property
     def page_value(self):
@@ -78,7 +70,7 @@ class ArticleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['prev_article'] = self.object.prev_article()
+        context['prev_article'] = self.object.prev_article()  # 获取前一篇文章和后一篇文章
         context['next_article'] = self.object.next_article()
 
         comment_form = CommentForm()

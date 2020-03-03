@@ -4,12 +4,19 @@ from django.contrib.sitemaps.views import sitemap
 from django.conf import settings
 
 from rest_framework_jwt.views import obtain_jwt_token
-
 from user.views import refresh_cache
 from .admin import admin_site
 from . import sitemaps
 from .feeds import BinBlogFeed
 
+import xadmin
+xadmin.autodiscover()
+
+# version模块自动注册需要版本控制的 Model
+from xadmin.plugins import xversion
+xversion.register_models()
+
+# sitemap布局
 sitemaps = {
     'static': sitemaps.StaticViewSitemap,
     'article': sitemaps.ArticleSitemap,
@@ -23,6 +30,9 @@ urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin_site.urls),
 
+    #xadmin管理后台
+    path('xadmin/', xadmin.site.urls),
+
     # md编辑器, 对比与pagedown有在线上传图片的功能
     path('mdeditor/', include('mdeditor.urls')),
 
@@ -30,7 +40,7 @@ urlpatterns = [
     path('', include('blog.urls', namespace='blog')),
     path('', include('user.urls', namespace='user')),
     # django自带登陆注册等方法的可以读
-    # path('', include('django.contrib.auth.urls')),
+    # path('user', include('django.contrib.auth.urls')),
 
     # Djangorestframework  rest-api的学习
     path('api-auth/', include('rest_framework.urls')),
@@ -38,10 +48,16 @@ urlpatterns = [
     path('api/user/', include('user.api.urls', namespace='api-user')),
     path('api/auth/token/', obtain_jwt_token),
 
-    # django-haystack全局搜索, 站点地图, feed订阅, 超级管理员刷新缓存
+    # django-haystack全局搜索,
     path('search', include('haystack.urls')),
+
+    # sitemap
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+
+    #feed订阅
     path('feed/', BinBlogFeed(), name='feed'),
+
+    #超级管理员刷新缓存
     path('refresh/', refresh_cache, name='refresh'),
 ]
 

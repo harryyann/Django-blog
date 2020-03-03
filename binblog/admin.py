@@ -31,16 +31,13 @@ from user.models import UserProfile, EmailVerifyCode
 from user.admin import UserProfileAdmin, EmailVerifyCodeAdmin, LogEntryAdmin
 from oauth.models import OAuthConfig, OAuthUser
 from oauth.admin import OAuthConfigAdmin
-from utils.get_setting import get_setting
+from blog.context_processors import get_setting
 
 
 class BinBlogAdminSite(AdminSite):
-    site_header = '彬彬博客后台管理'
-    site_title = '彬彬博客后台管理'
-
-    def __init__(self, name='admin'):
-        """ AdminSite追进去看 """
-        super().__init__(name)
+    site_header = '个人博客系统后台管理'
+    site_title = '个人博客'
+    index_title = '站点管理'
 
     def has_permission(self, request):
         """ 重载登陆后台权限设置

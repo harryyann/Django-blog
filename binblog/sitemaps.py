@@ -10,11 +10,11 @@ class StaticViewSitemap(Sitemap):
     changefreq = 'daily'  # 更改频率，文档里查找可使用的属性值
 
     def items(self):
-        # 在items里显式列出静态视图名称
+        # 在items里显式想要转移到的静态视图反向解析路径
         return ['blog:index', ]
 
     def location(self, item):
-        # 在location里用reverse调用, item是一个个items返回后的对象
+        # 在location里用reverse反向解析, item是一个个items返回后的对象
         return reverse(item)
 
 
@@ -50,7 +50,7 @@ class CategorySitemap(Sitemap):
 
 class TagSitemap(Sitemap):
     """ 指向所有标签条目链接的Sitemap """
-    changefreq = 'Weekly'
+    changefreq = 'daily'
     priority = 0.4
 
     def items(self):

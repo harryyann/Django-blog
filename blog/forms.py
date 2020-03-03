@@ -1,17 +1,8 @@
 from django import forms
-
 from blog.models import Article, Comment, GuestBook
 
 
 class ArticleAdminForm(forms.ModelForm):
-    """
-    admin管理form, 在content基础上添加 pagedown作为md编辑器
-    注释掉content了现在在正文里使用 mdeditor作为md编辑器
-    """
-
-    # from pagedown.widgets import AdminPagedownWidget
-    # content = forms.CharField(widget=AdminPagedownWidget)
-
     class Meta:
         model = Article
         fields = '__all__'
@@ -23,8 +14,6 @@ class ArticleAdminForm(forms.ModelForm):
 # ModelForm中 元Meta中的 fields, 和Model 相关联，可以进行save操作写入Model
 class CommentForm(forms.ModelForm):
     """ 前端评论框form """
-    # name = forms.CharField(label='名称', required=True, widget=forms.HiddenInput)
-    # email = forms.EmailField(label='邮箱', required=True, widget=forms.HiddenInput)
     parent_comment_id = forms.IntegerField(widget=forms.HiddenInput, required=False)
 
     class Meta:

@@ -46,8 +46,8 @@ class Command(BaseCommand):
         for i in range(1, count + 1):
             article = Article.objects.get_or_create(
                 category=sub_category,
-                title='我是测试标题 ' + str(i),
-                content='我是测试内容 ' + str(i),
+                title='标题 ' + str(i),
+                content='测试内容 ' + str(i),
                 author=user,
             )[0]
             tag = Tag.objects.get_or_create(name='标签' + str(i))[0]
@@ -59,7 +59,7 @@ class Command(BaseCommand):
         # 创建文章
         article = Article.objects.get_or_create(
             category=sub_category,
-            title='彬彬博客',
+            title='博客',
             author=user,
             content=
             """

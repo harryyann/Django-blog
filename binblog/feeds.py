@@ -6,7 +6,7 @@ from blog.models import Article
 class BinBlogFeed(Feed):
     title = '彬彬博客'  # xml里的 title, link, desc标签内容
     link = '/feed/'
-    description = '彬彬博客Feed'
+    description = 'Django-blog系统全部文章'
 
     def items(self):
         """ returns a list of objects that should be included in the feed as <item> elements. """
@@ -25,4 +25,4 @@ class BinBlogFeed(Feed):
         return item.author.username
 
     def feed_copyright(self):
-        return 'Copyright (c) 2019, Zhu Binbin'
+        return 'Copyright (c) 2020'

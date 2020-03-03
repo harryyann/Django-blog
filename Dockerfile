@@ -1,8 +1,6 @@
-# 基础镜像, 一个镜像Dockerfile必需的
+# 设置基础镜像
 FROM daocloud.io/python:3.6
-
-# 维护者信息, 可以写邮箱网站啥的
-MAINTAINER binbin <binloveplay1314@qq.com>
+MAINTAINER HarryYann
 
 ADD . /app
 WORKDIR /app

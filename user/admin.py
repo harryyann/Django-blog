@@ -25,8 +25,10 @@ class UserProfileAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, change=False, **kwargs):
         """ 获取页面表单 """
-        form = super().get_form(request, obj=obj, change=change, **kwargs)
-        form.base_fields['password'].help_text = '管理员可以直接修密码，会自动进行加密操作'
+        form = super().get_form(request, obj=None, change=False, **kwargs)
+
+        # 给password表单添加一个注释
+        form.base_fields['password'].help_text = '可以在这里直接修改密码，提交后会自动进行加密'
         return form
 
     def save_model(self, request, obj, form, change):
@@ -36,7 +38,6 @@ class UserProfileAdmin(admin.ModelAdmin):
             user = User.objects.get(id=obj.id)
             if obj.password != user.password:
                 obj.set_password(obj.password)
-                # obj.save()  # 在后面里有save
         else:
             # 增加用户, 就直接设置密码
             obj.set_password(obj.password)

@@ -20,7 +20,7 @@ from django.shortcuts import get_object_or_404
 from .forms import RegisterForm, LoginForm
 from .tasks import send_email_task
 from .models import EmailVerifyCode
-from utils.get_setting import get_setting
+from  blog.context_processors import get_setting
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -192,10 +192,10 @@ def refresh_cache(request):
     """ 清空缓存 """
     if request.user.is_superuser:
         from django.core.cache import cache
-        if cache and cache is not None:
+        if cache is not None:
             cache.clear()
 
-        messages.success(request, '缓存刷新成功')
+        messages.success(request, '缓存清除成功')
         return redirect(reverse('blog:index'))
     else:
-        return HttpResponseForbidden()  # 403封装的HttpResponse
+        return HttpResponseForbidden()  # 403 forbiddden

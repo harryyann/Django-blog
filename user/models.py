@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _  # 懒翻译, 国际化
 
-
 class UserProfile(AbstractUser):
     """ 自定义 User模型扩充字段，需要继承AbstractUser """
     GENDER_CHOICE = (

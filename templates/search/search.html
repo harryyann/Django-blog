@@ -13,17 +13,13 @@
         <div id="content" role="main">
             {% if query %}
                 <header class="archive-header">
-                    <h2 class="archive-title"> 搜索：<span style="color: red">{{ query }}</span></h2>
+                    <h2 class="archive-title"> 搜索结果如下：<span style="color: red">{{ query }}</span></h2>
                 </header>
             {% endif %}
             {% if query and page.object_list %}
-
-{#                {% pagination_tag page.object_list 2 as page.object_list %}#}
-
                 {% for article in page.object_list %}
                     {% inclusion_article_info_tag article.object True %}
                 {% endfor %}
-
             {% else %}
                 <header class="archive-header">
                     <h1 class="archive-title">哎呀，关键字：<span>{{ query }}</span>没有找到结果，要不换个词再试试？</h1>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 from django.utils.timezone import now  # 跟根据USE_TZ的值返回带时区或不带时区的datetime
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -13,7 +14,7 @@ from .manager import TopCategoryManager
 
 
 class Setting(models.Model):
-    """ 全局站点设置常量 """
+    """ 全局常量 """
     name = models.CharField(_('站点名称'), max_length=100)
     desc = models.TextField(_('站点描述'), default='', blank=True)
     keyword = models.TextField(_('站点关键字'), default='', blank=True)
@@ -23,19 +24,19 @@ class Setting(models.Model):
     user_verify_email = models.BooleanField(_('用户注册是否验证邮箱'), default=False)
     enable_multi_user = models.BooleanField(
         _('是否启用多用户博客系统'), default=False,
-        help_text=_('是否启用多用户博客系统, 注册用户只具有对自己文章的增删改查权限')
+        help_text=_('启用则用户只具有对自己文章的增删改查权限')
     )
     github_user = models.CharField(
-        _('github账号'), max_length=50, default='enjoy-binbin',
-        help_text='https://github.com/enjoy-binbin'
+        _('github账号'), max_length=50, default='HaryYann',
+        help_text='https://github.com/HaryYann'
     )
     github_repository = models.CharField(
-        _('github仓库'), max_length=50, default='Django-blog',
-        help_text='https://github.com/enjoy-binbin/Django-blog'
+        _('github仓库'), max_length=50, default='Personal-blog',
+        help_text='https://github.com//HaryYann//Personal-blog'
     )
 
     class Meta:
-        verbose_name = _('0-站点配置')
+        verbose_name = _('站点配置')
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -73,7 +74,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     """ 文章分类 """
-    name = models.CharField(_('分类名称'), max_length=30, unique=True)
+    name = models.CharField(_('分类'), max_length=30, unique=True)
     parent_category = models.ForeignKey('self', verbose_name=_('父级分类'), blank=True, null=True, on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField(_('排序'), default=0, help_text=_('越大越前'))
     slug = models.SlugField(max_length=50, default='')
@@ -82,7 +83,7 @@ class Category(BaseModel):
     top_objects = TopCategoryManager()  # 调用方式: Category.top_object.all()
 
     class Meta:
-        verbose_name = _('1-文章分类')
+        verbose_name = _('文章分类')
         verbose_name_plural = verbose_name
         ordering = ['-order', 'add_time']
 
@@ -139,9 +140,10 @@ class Article(BaseModel):
     order = models.PositiveSmallIntegerField(_('排序'), default=0, help_text=_('越大越前'))
     views = models.PositiveIntegerField(_('浏览量'), default=0)
     tags = models.ManyToManyField('Tag', verbose_name=_('标签'), blank=True)
+    # color_code = models.CharField(max_length=6)
 
     class Meta:
-        verbose_name = _('2-文章')
+        verbose_name = _('文章')
         verbose_name_plural = verbose_name
         ordering = ['-order', '-add_time']
         # get_latest_by = 'id'
@@ -194,7 +196,7 @@ class Comment(BaseModel):
     is_enable = models.BooleanField(_('是否显示'), default=True)
 
     class Meta:
-        verbose_name = _('3-文章评论')
+        verbose_name = _('评论')
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -206,7 +208,7 @@ class Tag(BaseModel):
     name = models.CharField(_('标签名'), max_length=25, unique=True)
 
     class Meta:
-        verbose_name = _('4-文章标签')
+        verbose_name = _('标签')
         verbose_name_plural = verbose_name
         ordering = ['name']
 
@@ -223,7 +225,7 @@ class Tag(BaseModel):
         """ 获取单个标签引用下的所有文章数量 """
         return Article.objects.filter(tags__name=self.name).count()
 
-    get_article_count.short_description = _('标签引用文章数')
+    get_article_count.short_description = _('标签内文章数')
 
 
 class SideBar(BaseModel):
@@ -234,7 +236,7 @@ class SideBar(BaseModel):
     is_enable = models.BooleanField(_('是否启用'), default=True)
 
     class Meta:
-        verbose_name = _('5-侧边栏')
+        verbose_name = _('侧边栏')
         verbose_name_plural = verbose_name
         ordering = ['-order']
 
@@ -250,7 +252,7 @@ class Link(BaseModel):
     is_enable = models.BooleanField(_('是否启用'), default=True)
 
     class Meta:
-        verbose_name = _('8-友情链接')
+        verbose_name = _('友情链接')
         verbose_name_plural = verbose_name
         ordering = ['order']
 
@@ -275,7 +277,7 @@ class Photo(BaseModel):
     image = models.ImageField(_('图片'), upload_to=photo_path, help_text=_('默认保存在/media/photo/'))
 
     class Meta:
-        verbose_name = _('6-相册图片')
+        verbose_name = _('相册')
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -288,7 +290,7 @@ class GuestBook(BaseModel):
     content = models.TextField(_('留言内容'), max_length=250)
 
     class Meta:
-        verbose_name = _('7-留言板')
+        verbose_name = _('留言板')
         verbose_name_plural = verbose_name
         ordering = ['author', '-id']
 
