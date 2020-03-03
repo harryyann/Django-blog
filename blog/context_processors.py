@@ -17,7 +17,7 @@ def get_setting():
         s.article_desc_len = 250          # 文章描述的长度
         s.sidebar_article_count = 5       # 侧边栏最热文章的数量
         s.enable_multi_user = True        # 设置多用户后台，允许有is_staff权限的用户登录后台
-        s.github_user = 'engoy-binbin'
+        s.github_user = 'HaryYann'
         s.github_repository = 'Django-blog'
 
         s.save()  # 保存到数据库
