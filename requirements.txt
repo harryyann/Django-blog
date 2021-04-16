@@ -9,7 +9,7 @@ Django==2.1.11
 django-appconf==1.0.3
 django-compressor==2.3
 django-crispy-forms==1.8.1
-django-debug-toolbar==2.2
+django-debug-toolbar==2.2.1
 django-formtools==2.2
 django-haystack==2.8.1
 django-import-export==2.0.2
